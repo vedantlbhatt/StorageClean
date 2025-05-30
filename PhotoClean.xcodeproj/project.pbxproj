@@ -29,9 +29,22 @@
 		392FD8D32DCFEFBD006E8F66 /* PhotoCleanUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotoCleanUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		39CB2C202DE5F105002218D2 /* Exceptions for "PhotoClean" folder in "PhotoClean" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 392FD8B82DCFEFBC006E8F66 /* PhotoClean */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		392FD8BB2DCFEFBC006E8F66 /* PhotoClean */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				39CB2C202DE5F105002218D2 /* Exceptions for "PhotoClean" folder in "PhotoClean" target */,
+			);
 			path = PhotoClean;
 			sourceTree = "<group>";
 		};
@@ -396,8 +409,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PhotoClean/Preview Content\"";
+				DEVELOPMENT_TEAM = A4YA8NU8Y8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PhotoClean/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs permission to modify your photo library, including deleting photos uwu please send :))).";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to your photo library to read photos please :)))";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -424,8 +441,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PhotoClean/Preview Content\"";
+				DEVELOPMENT_TEAM = A4YA8NU8Y8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PhotoClean/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs permission to modify your photo library, including deleting photos uwu please send :))).";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app requires access to your photo library to read photos please :)))";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
