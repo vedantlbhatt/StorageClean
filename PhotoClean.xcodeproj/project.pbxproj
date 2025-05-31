@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		39CB2C202DE5F105002218D2 /* Exceptions for "PhotoClean" folder in "PhotoClean" target */ = {
+		390586242DEB394B0009F986 /* Exceptions for "PhotoClean" folder in "PhotoClean" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,10 +40,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		392FD8BB2DCFEFBC006E8F66 /* PhotoClean */ = {
+		3905861D2DEB394B0009F986 /* PhotoClean */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				39CB2C202DE5F105002218D2 /* Exceptions for "PhotoClean" folder in "PhotoClean" target */,
+				390586242DEB394B0009F986 /* Exceptions for "PhotoClean" folder in "PhotoClean" target */,
 			);
 			path = PhotoClean;
 			sourceTree = "<group>";
@@ -88,7 +88,7 @@
 		392FD8B02DCFEFBC006E8F66 = {
 			isa = PBXGroup;
 			children = (
-				392FD8BB2DCFEFBC006E8F66 /* PhotoClean */,
+				3905861D2DEB394B0009F986 /* PhotoClean */,
 				392FD8CC2DCFEFBD006E8F66 /* PhotoCleanTests */,
 				392FD8D62DCFEFBD006E8F66 /* PhotoCleanUITests */,
 				392FD8BA2DCFEFBC006E8F66 /* Products */,
@@ -121,7 +121,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				392FD8BB2DCFEFBC006E8F66 /* PhotoClean */,
+				3905861D2DEB394B0009F986 /* PhotoClean */,
 			);
 			name = PhotoClean;
 			packageProductDependencies = (

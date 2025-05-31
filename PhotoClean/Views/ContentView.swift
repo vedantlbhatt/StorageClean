@@ -4,17 +4,17 @@ import Photos
 struct ContentView: View {
     @State private var recentImages: [UIImage?] = []
     @State private var recentImagesAssets: [PHAsset?] = []
-    @State private var idx: Int = 0
     @State var assetsToDelete: [PHAsset?] = []
 
+    @State var cards: [Card] = []
+    
     var body: some View {
         VStack {
             ScrollView {
                 ZStack {
-                    ForEach(0..<recentImages.count, id: \.self) { i in
-                        if recentImages[i] != nil {
-                            DecisionView(image: $recentImages[i],
-                                         imageAsset: $recentImagesAssets[i],
+                    ForEach(0..<cards.count, id: \.self) { i in
+                        if cards[i].asset != nil {
+                            DecisionView(card: $cards[i],
                                          assetsToDelete: $assetsToDelete)
                         } else {
                             RoundedRectangle(cornerRadius: 16)
@@ -52,7 +52,7 @@ struct ContentView: View {
 
                 let fetchOptions = PHFetchOptions()
                 fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-                fetchOptions.fetchLimit = 7
+                fetchOptions.fetchLimit = 20
                 let fetchResult = PHAsset.fetchAssets(with: .image, options: fetchOptions)
 
                 for i in 0..<fetchResult.count {
@@ -67,9 +67,8 @@ struct ContentView: View {
                     imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: requestOptions) { image, _ in
                         if image != nil {
                             DispatchQueue.main.async {
-                                self.recentImages.insert(image, at: 0)
-                                print("\(i)")
-                                print(asset.creationDate ?? "pos")
+                                self.cards.insert(PhotoCard(decision: .undecided, asset: asset, image: image), at: 0)
+                                //self.recentImages.insert(image, at: 0)
                             }
                         }
                     }
@@ -79,21 +78,17 @@ struct ContentView: View {
 }
 
 struct DecisionView: View {
-    @Binding var image: UIImage?
-    @Binding var imageAsset: PHAsset?
+    @Binding var card: Card
+
     @Binding var assetsToDelete: [PHAsset?]
-    @State var show: Bool = true
+    
+    @State private var offset: CGSize = .zero
+    @State private var currentSwipeFinished: Bool = true
 
     var body: some View {
         
-        if show {
             VStack {
-                Rectangle()
-                    .fill(Color.blue)
-                    .frame(width: 100, height: 100)
-                Text("\(imageAsset?.creationDate ?? Date())")
-                    .font(.largeTitle)
-                if let image = image {
+                if let photoCard = card as? PhotoCard, let image = photoCard.image {
                     Image(uiImage: image)
                         .resizable()
                         .scaledToFill()
@@ -103,11 +98,40 @@ struct DecisionView: View {
                         .shadow(radius: 8)
                 }
             }
-            .onTapGesture {
-                show.toggle()
-                assetsToDelete.append(imageAsset)
-            }
+            .offset(x: offset.width, y: 0)
+            .rotationEffect(.degrees(Double(offset.width / 20)))
+            .gesture(
+                DragGesture()
+                    .onChanged { gesture in
+                        offset = gesture.translation
+                    }
+                    .onEnded { _ in
+                        if offset.width > 150 {
+                            likeCard()
+                        } else if offset.width < -150 {
+                            dislikeCard()
+                        } else {
+                            offset = .zero
+                        }
+                    }
+            )
+    }
+    
+    func likeCard() {
+        withAnimation {
+            offset.width = 500
         }
+    }
+    
+    func dislikeCard() {
+        withAnimation {
+            offset.width = -500
+            removeCard()
+        }
+    }
+    
+    func removeCard() {
+        assetsToDelete.append(card.asset)
     }
 }
 
