@@ -2,10 +2,8 @@ import SwiftUI
 import Photos
 
 struct ContentView: View {
-    @State private var recentImages: [UIImage?] = []
-    @State private var recentImagesAssets: [PHAsset?] = []
-    @State var assetsToDelete: [PHAsset?] = []
 
+    @State var assetsToDelete: [PHAsset?] = []
     @State var cards: [Card] = []
     
     var body: some View {
@@ -29,7 +27,7 @@ struct ContentView: View {
                     let status = PHPhotoLibrary.authorizationStatus(for: .readWrite)
                     print("Photo Library Authorization Status: \(status)")
                 PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.deleteAssets(assetsToDelete as NSArray)
+                    PHAssetChangeRequest.deleteAssets(assetsToDelete.compactMap { $0 } as NSArray)
                 }) { success, error in
                     if success {
                         print("Asset deleted successfully.")
@@ -57,7 +55,6 @@ struct ContentView: View {
 
                 for i in 0..<fetchResult.count {
                     let asset = fetchResult[i]
-                    self.recentImagesAssets.insert(asset, at: 0)
                     let imageManager = PHImageManager.default()
                     let targetSize = CGSize(width: 300, height: 300)
                     let requestOptions = PHImageRequestOptions()
@@ -67,8 +64,7 @@ struct ContentView: View {
                     imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: requestOptions) { image, _ in
                         if image != nil {
                             DispatchQueue.main.async {
-                                self.cards.insert(PhotoCard(decision: .undecided, asset: asset, image: image), at: 0)
-                                //self.recentImages.insert(image, at: 0)
+                                self.cards.insert(PhotoCard(decision: .UNDECIDED, asset: asset, image: image), at: 0)
                             }
                         }
                     }
@@ -79,14 +75,10 @@ struct ContentView: View {
 
 struct DecisionView: View {
     @Binding var card: Card
-
     @Binding var assetsToDelete: [PHAsset?]
-    
     @State private var offset: CGSize = .zero
-    @State private var currentSwipeFinished: Bool = true
 
     var body: some View {
-        
             VStack {
                 if let photoCard = card as? PhotoCard, let image = photoCard.image {
                     Image(uiImage: image)
@@ -106,32 +98,53 @@ struct DecisionView: View {
                         offset = gesture.translation
                     }
                     .onEnded { _ in
-                        if offset.width > 150 {
+                        if offset.width > 100 {
                             likeCard()
-                        } else if offset.width < -150 {
+                        } else if offset.width < -100 {
                             dislikeCard()
+                        } else if offset.height < -50 {
+                            laterCard()
                         } else {
                             offset = .zero
                         }
                     }
             )
-    }
+        }
     
     func likeCard() {
         withAnimation {
             offset.width = 500
+        }
+        card.decision = .KEEP
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            removeCard()
+        }
+    }
+    
+    func laterCard() {
+        withAnimation {
+            offset.width = -400
+        }
+        card.decision = .LATER
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            removeCard()
         }
     }
     
     func dislikeCard() {
         withAnimation {
             offset.width = -500
+        }
+        card.decision = .DELETE
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             removeCard()
         }
     }
     
     func removeCard() {
-        assetsToDelete.append(card.asset)
+        if (card.decision == .DELETE) {
+            assetsToDelete.append(card.asset)
+        }
     }
 }
 

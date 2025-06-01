@@ -12,7 +12,7 @@ import Photos
 class PhotoCard: Card {
     var image: UIImage?
     
-    init(decision: Decision = .undecided, asset: PHAsset? = nil, image: UIImage? = nil) {
+    init(decision: Decision = .UNDECIDED, asset: PHAsset? = nil, image: UIImage? = nil) {
         self.image = image
         super.init(asset: asset, decision: decision)
     }
